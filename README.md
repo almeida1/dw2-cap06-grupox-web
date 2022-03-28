@@ -64,3 +64,49 @@ As classes conceituais relacionadas aos requisitos para está interação foram 
 
 Considerando requisitos de negócio que envolvem a utilização do sistema flexivel para os tipos de dispositivos de entrada (desktop, dispositivos moveis ou totens) a arquitetura segue o estilo Hezagonal  que isola o nucleo da aplicação (camada interna) da camada externa que é tudo que se comunica com a aplicação, banco de dados, serviços de e-mail e os controllers (RICHARDSON, 2018, p.38). A parte externa pode ser modificada de acordo com a necessidade melhorando a testabilidade do software considerando que as modificações na camada externa não impactam a camada interna devido ao seu isolamento. 
 
+
+![diagrama3](https://user-images.githubusercontent.com/68782201/160413850-22d31bb9-8309-4c2b-8165-31cf344a2996.jpg)
+
+A arquitetura segue uma abordagem orientada a serviços. Os serviços foram classificados em três tipos (ERL, 2007): **1. Serviços utilitários**. Implementam funcionalidades comuns a vários tipos de aplicações, como, por exemplo: log, notificação, transformação de informações. Um exemplo de serviço utilitário é um serviço de conversão de moeda que poderá ser acessado para calcular a conversão de uma moeda (por exemplo, dólares) para outra (por exemplo, euros).
+**2. Serviços de entidade (serviços de negócios)**. Derivado de uma ou mais entidades de negócio (domínio), possuindo um alto grau de reutilização. Geralmente são serviços que fazem operações CRUD (Create, Read, Update e Delete). 
+
+**3. Serviços de tarefa (coordenação de processos-workflow)**. Tipo de serviço mais específico que possui baixo grau de reuso. Consome outros serviços para atender seus consumidores. São serviços que suportam um processo de negócios amplo que geralmente envolve atividades e atores diferentes. Um exemplo de serviço de coordenação em uma empresa é um serviço de pedidos em que os pedidos são feitos, os produtos são aceitos e os pagamentos são efetuados.
+
+A visão lógica da arquitetura para API de Cliente é apresentada na figura abaixo. A visã lógica descreve como o código está organizado, as classes os pacotes e os relacionamentos entre eles. 
+
+
+![](diagrama1.jpg)
+
+
+>As operações da entidade Cliente identificada no modelo de dominio do SIG-VS são especificadas como um serviço que apoia o processo de venda. O contrato das operações de sistema devem ser definidos (LARMAN, 2006, pag 140). 
+
+```mermaid
+classDiagram
+    class ClienteServicoI
+    <<interface>> ClienteServicoI
+    
+    ClienteServicoI : +List<Cliente> consultaTodos()
+    ClienteServicoI : +Optional<<Cliente>> consultaPorCpf(String cpf)
+    ClienteServicoI : +Optional<<Cliente>> consultaPorId(Long id)
+    ClienteServicoI : +Optional<<Cliente>> save(Cliente c)
+    ClienteServicoI : +void delete (Long id)
+    ClienteServicoI : +Optional<<Cliente>> altera (Cliente c)
+
+
+```
+>Design dos endpoints 
+```mermaid
+sequenceDiagram 
+Usuario ->> APIClienteController: GET /api/v1/clientes
+APIClienteController ->> ClienteServiceI: consultaTodos ( )
+ClienteServiceI ->> ClienteRepository: findAll ( )
+ClienteRepository -->> ClienteServiceI: ArrayList[]
+ClienteServiceI-->> APIClienteController: ArrayList[]
+APIClienteController -->> Usuario: ResponseEntity
+```
+>Referencias
+- [1] KRUCTEN, Philippe. Reference: Title: Architectural blueprints—the “4+ 1” view model of software architecture. IEEE software, v. 12, n. 6, 1995.
+- [2] RICHARDSON, Chris. Microservices patterns: with examples in Java. Simon and Schuster, 2018.
+- [3] ERL, Thomas. SOA principles of service design (the Prentice Hall service-oriented computing series from Thomas Erl). Prentice Hall PTR, 2007.
+- [4] LARMAN, Craig. Utilizando UML e padrões. 2aed., Porto Alegre: Bookman Editora, 2006 (pag. 147).
+
