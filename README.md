@@ -95,7 +95,7 @@ classDiagram
 
 
 ```
->O diagrama de sequência mostra como os objetos interagem para executar o comportamento de todo ou parte de um caso de uso.
+>O diagrama de sequência mostra como os objetos interagem para executar o comportamento de todo ou parte dos requsito.
 ```mermaid
 sequenceDiagram 
 Usuario ->> APIClienteController: GET /api/v1/clientes
