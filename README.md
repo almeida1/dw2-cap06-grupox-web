@@ -58,11 +58,11 @@ Os seguintes requisitos foram identificados na primeira reunião com o cliente (
 ##### Elaboração - projeto
 
 > 
-As classes conceituais relacionadas aos requisitos para está interação foram identificadas no modelo de dominio. 
+O modelo de dominio (Larman, 2006 - classes conceituais ou classes de negócio) foi definido considerando as seguintes classes: 
 
 ![modelo de dominio](https://user-images.githubusercontent.com/68782201/160412338-54c2c974-d6d2-4ab6-bea5-e1137a6f7e6c.jpg)
 
-Considerando requisitos de negócio que envolvem a utilização do sistema flexivel para os tipos de dispositivos de entrada (desktop, dispositivos moveis ou totens) a arquitetura segue o estilo Hexagonal  que isola o nucleo da aplicação (camada interna) da camada externa que é tudo que se comunica com a aplicação, banco de dados, serviços de e-mail e os controllers (RICHARDSON, 2018, p.38). A parte externa pode ser modificada de acordo com a necessidade melhorando a testabilidade do software considerando que as modificações na camada externa não impactam a camada interna devido ao seu isolamento. 
+Requisitos de negócio estabelecem que a utilização do sistema deve ser flexivel para os tipos de dispositivos de entrada (desktop, dispositivos moveis ou totens). Considerando estes requisitos, a arquitetura segue o estilo Hexagonal,  que isola o nucleo da aplicação (camada interna) da camada externa que é tudo que se comunica com a aplicação, entrada de dados (inbound port) utilizando controllers e saída (outbound ports) banco de dados, serviços de e-mail (RICHARDSON, 2018, p.38). A camada externa pode ser modificada de acordo com a necessidade, porque modificações na camada externa não impactam a camada interna devido ao seu isolamento. Esta abordagem também aumenta a testabilidade do softawre em relação a controlabilidade e a observabilidade do software sob teste.  
 
 
 ![diagrama3](https://user-images.githubusercontent.com/68782201/160413850-22d31bb9-8309-4c2b-8165-31cf344a2996.jpg)
@@ -76,10 +76,11 @@ A arquitetura segue uma abordagem orientada a serviços. Os serviços foram clas
 A visão lógica da arquitetura para API de Cliente é apresentada na figura abaixo. A visã lógica descreve como o código está organizado, as classes os pacotes e os relacionamentos entre eles. 
 
 
-![](diagrama1.jpg)
+
+![f3_visao_logica](https://user-images.githubusercontent.com/68782201/162488505-5ec27561-eb83-42dc-a05f-27760e5bb7f3.jpg)
 
 
->As operações da entidade Cliente identificada no modelo de dominio do SIG-VS são especificadas como um serviço que apoia o processo de venda. O contrato das operações de sistema devem ser definidos (LARMAN, 2006, pag 140). 
+>A entidade Cliente foi identificada como um serviço (ERL, 2007 - serviço do tipo entidade) o contrado das operações de sistema (LARMAN, 2006, pag.140) foram definidas no diagrama abaixo.
 
 ```mermaid
 classDiagram
@@ -101,9 +102,9 @@ sequenceDiagram
 Usuario ->> APIClienteController: GET /api/v1/clientes
 APIClienteController ->> ClienteServiceI: consultaTodos ( )
 ClienteServiceI ->> ClienteRepository: findAll ( )
-ClienteRepository -->> ClienteServiceI: ArrayList[]
-ClienteServiceI-->> APIClienteController: ArrayList[]
-APIClienteController -->> Usuario: ResponseEntity
+ClienteRepository -->> ClienteServiceI: List[]
+ClienteServiceI-->> APIClienteController: List[]
+APIClienteController -->> Usuario: JSon[]
 ```
 >Referencias
 - [1] KRUCHTEN, Philippe. Reference: Title: Architectural blueprints—the “4+ 1” view model of software architecture. IEEE software, v. 12, n. 6, 1995.
